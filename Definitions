@@ -1,0 +1,88 @@
+Instructions:
+    0 arguments:
+        NOP: 0x0
+    1 argument:
+        DATA: 0x00
+        JMP: 0x01
+        NOT: 0x02
+        PROT: 0x03
+        RSTN: 0x04
+        RSTE: 0x05
+        RSTS: 0x06
+        RSTW: 0x07
+        SETN: 0x08
+        SETE: 0x09
+        SETS: 0x0A
+        SETW: 0x0B
+        SPLIT: 0x0C
+    2 arguments:
+        ADD: 0x00
+        AND: 0x01
+        DIV: 0x02
+        JMPXZ: 0x03
+        JMPXN: 0x04
+        JMPYZ: 0x05
+        JMPYN: 0x06
+        JMPBZ: 0x07
+        JMPBN: 0x08
+        JMPNR: 0x09
+        JMPNS: 0x0A
+        JMPER: 0x0B
+        JMPES: 0x0C
+        JMPSR: 0x0D
+        JMPSS: 0x0E
+        JMPWR: 0x0F
+        JMPWS: 0x10
+        JMPMF: 0x11
+        JMPMT: 0x12
+        JMPOF: 0x13
+        JMPOT: 0x14
+        JMPRZ: 0x15
+        JMPRN: 0x16
+        MOD: 0x17
+        MOVE: 0x18
+        MULT: 0x19
+        OR: 0x1A
+        RAND: 0x1B
+        SUB: 0x1C
+
+Big Endian
+    Bit 63: 0 = 1 argument, 1 = 2 arguments
+    1 argument:
+        3210987654321098765432109876543210987654321098765432109876543210
+           f   f   f   f   f   f   f   f   f   f   f   f   f   f   f   f
+        AIIIIAAAAXXXXXXXXXXXXXXXXXXXXXXXXXXXYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+
+        4 bit instruction key: bits 62-59
+        Addressing: 4 bits: bits 58-55 (direct 58-57, indirect 56-55)
+        X coordinate: 54-28
+        Y coordinate: 27-0
+    2 arguments:
+        3210987654321098765432109876543210987654321098765432109876543210
+        AIIIIIAAAAXXXXXXXXXXXXYYYYYYYYYYYYAAAAXXXXXXXXXXXXXYYYYYYYYYYYYY
+
+        5 bit instruction key: bits 62-58
+        Argument 1:
+            Addressing: 4 bits: 57-54 (direct 57-56, indirect 55-54)
+            X coordinate: 12 bits: 53-42
+            Y coordinate: 12 bits: 41-30
+        Argument 2:
+            Addressing: 4 bits: 29-26 (direct 29-28, indirect 27-26)
+            X coordinate: 13 bits: 25-13
+            Y coordinate: 13 bits: 12-0
+
+Addressing:
+    Direct:
+        #: 0x0
+        ^: 0x1
+        &: 0x2
+    Indirect:
+        #: 0x0
+        ^: 0x1
+        @: 0x2
+        &: 0x3
+
+
+Cell:
+    Instruction: 64 bit number
+    Execution Flow: 4 bits
