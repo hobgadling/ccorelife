@@ -5,11 +5,16 @@
 #include "execution.h"
 
 int main(){
-    srand(time(NULL));
+    data d;
+    int i;
+
+    pointers = malloc(sizeof(data));
+    pointers_length = 1;
+    d.x = 0;
+    d.y = 0;
+    pointers[0] = d;
 
     fillGrid();
-
-    printGrid();
 
     return 0;
 }
@@ -281,7 +286,7 @@ char *getAddresses(instruction i){
 // or if the coordinates are what its loooking for
 data getData(int addressing, coordinate x, coordinate y){
     data currentData;
-    data pointer = *pointers;
+    data pointer = pointers[0];
     cell tempCell;
     exploded_instruction inst;
 
@@ -374,7 +379,7 @@ data getData(int addressing, coordinate x, coordinate y){
 
 data getCellAddress(int addressing,coordinate x,coordinate y){
     data currentData;
-    data pointer = *pointers;
+    data pointer = pointers[0];
     cell tempCell;
     exploded_instruction inst;
 
@@ -474,7 +479,7 @@ exploded_instruction explodeInstruction(instruction i){
 void executeInstruction(data current_location){
     exploded_instruction i;
     data arg1,arg2;
-    data pointer = *pointers;
+    data pointer = pointers[0];
 
     i = explodeInstruction(grid[current_location.x][current_location.y].inst);
     if(i.arguments == 0){

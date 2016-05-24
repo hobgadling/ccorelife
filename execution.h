@@ -45,6 +45,8 @@ typedef struct exploded_instruction{
 } exploded_instruction;
 
 data *pointers;
+int pointers_length;
+
 program *owners;
 
 cell grid[GRID_SIZE][GRID_SIZE];
@@ -61,5 +63,6 @@ void executeInstruction(data);
 void addInst(data,data,data);
 data getCellAddress(int,coordinate,coordinate);
 void saveData(data,data);
+void tick(void);
 
 #endif
