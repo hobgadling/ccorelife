@@ -58,5 +58,8 @@ int cellCmp(cell,cell);
 int dataCmp(data,data);
 exploded_instruction explodeInstruction(instruction);
 void executeInstruction(data);
+void addInst(data,data,data);
+data getCellAddress(int,coordinate,coordinate);
+void saveData(data,data);
 
 #endif

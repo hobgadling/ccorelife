@@ -372,6 +372,47 @@ data getData(int addressing, coordinate x, coordinate y){
     return currentData;
 }
 
+data getCellAddress(int addressing,coordinate x,coordinate y){
+    data currentData;
+    data pointer = *pointers;
+    cell tempCell;
+    exploded_instruction inst;
+
+    switch(addressing){
+        case 0x0: // #(#X,Y)
+        case 0xC:
+        case 0x1: // ^(#X,Y)
+        case 0xD:
+        case 0x2: // @(#X,Y)
+        case 0xE:
+        case 0x4: // #(^X,Y)
+        case 0x8: // #(&X,Y)
+            currentData.x = pointer.x;
+            currentData.y = pointer.y;
+            break;
+        case 0x3: // &(#X,Y)
+        case 0xF:
+            tempCell = grid[pointer.x][pointer.y];
+            currentData.x = tempCell.owner.origin.x + x;
+            currentData.y = tempCell.owner.origin.y + y;
+            break;
+        case 0x5: // ^(^X,Y)
+        case 0x6: // @(^X,Y)
+        case 0x7: // &(^X,Y)
+            currentData.x = pointer.x + x;
+            currentData.y = pointer.y + y;
+            break;
+        case 0x9: // ^(&X,Y)
+        case 0xA: // @(&X,Y)
+        case 0xB:  // &(&X,Y)
+            currentData.x = pointer.x + tempCell.owner.origin.x;
+            currentData.y = pointer.y + tempCell.owner.origin.y;
+            break;
+    }
+
+    return currentData;
+}
+
 int cellCmp(cell cell1, cell cell2){
     int match = 0;
 
@@ -481,6 +522,8 @@ void executeInstruction(data current_location){
         }
         switch(i.inst){
             case 0x00:
+                addInst(arg1,arg2,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "add";
             case 0x01:
                 //return "and";
@@ -542,5 +585,11 @@ void executeInstruction(data current_location){
                 return;
                 //return "nop";
         }
+    }
+}
+
+void saveData(data save_to, data d){
+    if(grid[save_to.x][save_to.y].inst >> 54 == 0){
+        grid[save_to.x][save_to.y].inst = (d.x << 27) | d.y;
     }
 }
