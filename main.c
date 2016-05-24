@@ -1,66 +1,10 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <inttypes.h>
 #include <time.h>
 #include <math.h>
 #include <string.h>
-
-#define instruction uint64_t
-#define coordinate signed long long
-#define GRID_SIZE 10
-
-typedef struct data{
-    coordinate x;
-    coordinate y;
-} data;
-
-typedef struct program{
-    long long id;
-    data origin;
-} program;
-
-static const program emptyProgram;
-
-typedef struct cell{
-    instruction inst;
-    unsigned char n;
-    unsigned char e;
-    unsigned char s;
-    unsigned char w;
-    program owner;
-} cell;
-
-static const cell emptyCell;
-
-typedef struct exploded_instruction{
-    char arguments;
-    unsigned char inst;
-    unsigned char addressing1;
-    unsigned long x1;
-    unsigned long y1;
-    unsigned char addressing2;
-    unsigned long x2;
-    unsigned long y2;
-} exploded_instruction;
-
-data *pointers;
-program *owners;
-
-cell grid[GRID_SIZE][GRID_SIZE];
-
-char *getInstruction(instruction);
-void fillGrid(void);
-void printGrid(void);
-char *getAddresses(instruction);
-data getData(int,coordinate,coordinate);
-int cellCmp(cell,cell);
-exploded_instruction explodeInstruction(instruction);
-void executeInstruction(data);
+#include "execution.h"
 
 int main(){
-    int i,j;
-
     srand(time(NULL));
 
     fillGrid();
@@ -450,6 +394,20 @@ int cellCmp(cell cell1, cell cell2){
     return match;
 }
 
+int dataCmp(data d1, data d2){
+    int match = 0;
+
+    if(d1.x != d2.x){
+        match = -1;
+    }
+
+    if(d1.y != d2.y){
+        match = -1;
+    }
+
+    return match;
+}
+
 exploded_instruction explodeInstruction(instruction i){
     exploded_instruction retVal;
     if(i >> 63 == 0){
@@ -473,5 +431,116 @@ exploded_instruction explodeInstruction(instruction i){
 }
 
 void executeInstruction(data current_location){
+    exploded_instruction i;
+    data arg1,arg2;
+    data pointer = *pointers;
 
+    i = explodeInstruction(grid[current_location.x][current_location.y].inst);
+    if(i.arguments == 0){
+        arg1 = getData(i.addressing1,i.x1,i.y1);
+        if(dataCmp(arg1,emptyData) == 0){
+            return;
+        }
+        switch(i.inst){
+            case 0:
+                //return "data";
+                return;
+            case 1:
+                //return "jmp";
+            case 2:
+                //return "not";
+            case 3:
+                //return "prot";
+            case 4:
+                //return "rstn";
+            case 5:
+                //return "rste";
+            case 6:
+                //return "rsts";
+            case 7:
+                //return "rstw";
+            case 8:
+                //return "setn";
+            case 9:
+                //return "sete";
+            case 0xa:
+                //return "sets";
+            case 0xb:
+                //return "setw";
+            case 0xc:
+                //return "split";
+            default:
+                //return "nop";
+                return;
+        }
+    } else {
+        arg1 = getData(i.addressing1,i.x1,i.y1);
+        arg2 = getData(i.addressing2,i.x2,i.y2);
+        if((dataCmp(arg1,emptyData) == 0) || (dataCmp(arg2,emptyData) == 0)){
+            return;
+        }
+        switch(i.inst){
+            case 0x00:
+                //return "add";
+            case 0x01:
+                //return "and";
+            case 0x02:
+                //return "div";
+            case 0x03:
+                //return "jmpxz";
+            case 0x04:
+                //return "jmpxn";
+            case 0x05:
+                //return "jmpyz";
+            case 0x06:
+                //return "jmpyn";
+            case 0x07:
+                //return "jmpbz";
+            case 0x08:
+                //return "jmpbn";
+            case 0x09:
+                //return "jmpnr";
+            case 0x0A:
+                //return "jmpns";
+            case 0x0B:
+                //return "jmper";
+            case 0x0C:
+                //return "jmpes";
+            case 0x0D:
+                //return "jmpsr";
+            case 0x0E:
+                //return "jmpss";
+            case 0x0F:
+                //return "jmpwr";
+            case 0x10:
+                //return "jmpws";
+            case 0x11:
+                //return "jmpmf";
+            case 0x12:
+                //return "jmpmt";
+            case 0x13:
+                //return "jmpof";
+            case 0x14:
+                //return "jmpot";
+            case 0x15:
+                //return "jmprz";
+            case 0x16:
+                //return "jmprn";
+            case 0x17:
+                //return "mod";
+            case 0x18:
+                //return "move";
+            case 0x19:
+                //return "mult";
+            case 0x1A:
+                //return "or";
+            case 0x1B:
+                //return "rand";
+            case 0x1C:
+                //return "sub";
+            default:
+                return;
+                //return "nop";
+        }
+    }
 }
