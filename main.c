@@ -6,21 +6,30 @@
 
 int main(){
     data d;
-    int i;
+    int i,j;
+
+    fillGrid();
 
     pointers = malloc(sizeof(data));
     pointers_length = 1;
-    d.x = 0;
-    d.y = 0;
+    for(i = GRID_SIZE; i >= 0; i--){
+        for(j = GRID_SIZE; j >= 0; j--){
+            if(cellCmp(grid[i][j],emptyCell) != 0 && (grid[i][j].n + grid[i][j].e + grid[i][j].w + grid[i][j].s) > 0){
+                d.x = i;
+                d.y = j;
+            }
+        }
+    }
     pointers[0] = d;
 
     newPointers = NULL;
     newpointers_length = 0;
     follow_flow = 1;
 
-    fillGrid();
-
-    tick();
+    for(i = 0; i < 20; i++){
+        printf("Tick %d:\n",i);
+        tick();
+    }
 
     return 0;
 }
@@ -76,6 +85,31 @@ void printGrid(){
             printf("\n");
         }
     }
+}
+
+void printCell(int i,int j){
+    printf("%ix%i: ",i,j);
+    if(cellCmp(grid[i][j],emptyCell) == 0){
+        printf("\n");
+    } else {
+        printf("%s, ", getInstruction(grid[i][j].inst));
+        if(strcmp(getInstruction(grid[i][j].inst),"nop") != 0){
+            printf("%s ", getAddresses(grid[i][j].inst));
+        }
+        if(grid[i][j].n == 1){
+            printf("N");
+        }
+        if(grid[i][j].e == 1){
+            printf("E");
+        }
+        if(grid[i][j].w == 1){
+            printf("W");
+        }
+        if(grid[i][j].s == 1){
+            printf("S");
+        }
+    }
+    printf("\n");
 }
 
 char *getInstruction(instruction i){
@@ -315,7 +349,7 @@ data getData(int addressing, coordinate x, coordinate y){
             break;
         case 0x3: // &(#X,Y)
         case 0xF:
-            tempCell = grid[pointer.x][pointer.y];
+            tempCell = grid[pointer.x % GRID_SIZE][pointer.y % GRID_SIZE];
             currentData.x = tempCell.owner.origin.x + x;
             currentData.y = tempCell.owner.origin.y + y;
             break;
@@ -324,7 +358,7 @@ data getData(int addressing, coordinate x, coordinate y){
             currentData.y = pointer.y + y;
             break;
         case 0x5: // ^(^X,Y)
-            tempCell = grid[pointer.x + x][pointer.y + y];
+            tempCell = grid[positive_modulo(pointer.x + x,GRID_SIZE)][positive_modulo(pointer.y + y,GRID_SIZE)];
             inst = explodeInstruction(tempCell.inst);
             if(inst.inst == 0x0){ // Only works if data!
                 currentData.x = pointer.x + inst.x1;
@@ -332,7 +366,7 @@ data getData(int addressing, coordinate x, coordinate y){
             }
             break;
         case 0x6: // @(^X,Y)
-            tempCell = grid[pointer.x + x][pointer.y + y];
+            tempCell = grid[positive_modulo(pointer.x + x,GRID_SIZE)][positive_modulo(pointer.y + y,GRID_SIZE)];
             inst = explodeInstruction(tempCell.inst);
             if(inst.inst == 0x0){ // Only works if data!
                 currentData.x = pointer.x + x + inst.x1;
@@ -340,7 +374,7 @@ data getData(int addressing, coordinate x, coordinate y){
             }
             break;
         case 0x7: // &(^X,Y)
-            tempCell = grid[pointer.x + x][pointer.y + y];
+            tempCell = grid[positive_modulo(pointer.x + x,GRID_SIZE)][positive_modulo(pointer.y + y,GRID_SIZE)];
             inst = explodeInstruction(tempCell.inst);
             if(inst.inst == 0x0){ // Only works if data!
                 currentData.x = tempCell.owner.origin.x + inst.x1;
@@ -348,13 +382,13 @@ data getData(int addressing, coordinate x, coordinate y){
             }
             break;
         case 0x8: // #(&X,Y)
-            tempCell = grid[pointer.x][pointer.y];
+            tempCell = grid[pointer.x % GRID_SIZE][pointer.y % GRID_SIZE];
             currentData.x = tempCell.owner.origin.x + x;
             currentData.y = tempCell.owner.origin.y + y;
             break;
         case 0x9: // ^(&X,Y)
-            tempCell = grid[pointer.x][pointer.y];
-            tempCell = grid[pointer.x + tempCell.owner.origin.x][pointer.y + tempCell.owner.origin.y];
+            tempCell = grid[pointer.x % GRID_SIZE][pointer.y % GRID_SIZE];
+            tempCell = grid[positive_modulo(pointer.x + tempCell.owner.origin.x,GRID_SIZE)][positive_modulo(pointer.y + tempCell.owner.origin.y,GRID_SIZE)];
             inst = explodeInstruction(tempCell.inst);
             if(inst.inst == 0x0){ // Only works if data!
                 currentData.x = pointer.x + inst.x1;
@@ -362,8 +396,8 @@ data getData(int addressing, coordinate x, coordinate y){
             }
             break;
         case 0xA: // @(&X,Y)
-            tempCell = grid[pointer.x][pointer.y];
-            tempCell = grid[pointer.x + tempCell.owner.origin.x][pointer.y + tempCell.owner.origin.y];
+            tempCell = grid[pointer.x % GRID_SIZE][pointer.y % GRID_SIZE];
+            tempCell = grid[positive_modulo(pointer.x + tempCell.owner.origin.x,GRID_SIZE)][positive_modulo(pointer.y + tempCell.owner.origin.y,GRID_SIZE)];
             inst = explodeInstruction(tempCell.inst);
             if(inst.inst == 0x0){ // Only works if data!
                 currentData.x = pointer.x + x + inst.x1;
@@ -371,8 +405,8 @@ data getData(int addressing, coordinate x, coordinate y){
             }
             break;
         case 0xB:  // &(&X,Y)
-            tempCell = grid[pointer.x][pointer.y];
-            tempCell = grid[pointer.x + tempCell.owner.origin.x][pointer.y + tempCell.owner.origin.y];
+        tempCell = grid[pointer.x % GRID_SIZE][pointer.y % GRID_SIZE];
+        tempCell = grid[positive_modulo(pointer.x + tempCell.owner.origin.x,GRID_SIZE)][positive_modulo(pointer.y + tempCell.owner.origin.y,GRID_SIZE)];
             inst = explodeInstruction(tempCell.inst);
             if(inst.inst == 0x0){ // Only works if data!
                 currentData.x = tempCell.owner.origin.x + inst.x1;
@@ -404,7 +438,7 @@ data getCellAddress(int addressing,coordinate x,coordinate y){
             break;
         case 0x3: // &(#X,Y)
         case 0xF:
-            tempCell = grid[pointer.x][pointer.y];
+            tempCell = grid[pointer.x % GRID_SIZE][pointer.y % GRID_SIZE];
             currentData.x = tempCell.owner.origin.x + x;
             currentData.y = tempCell.owner.origin.y + y;
             break;
@@ -421,6 +455,9 @@ data getCellAddress(int addressing,coordinate x,coordinate y){
             currentData.y = pointer.y + tempCell.owner.origin.y;
             break;
     }
+
+    currentData.x = currentData.x % GRID_SIZE;
+    currentData.y = currentData.y % GRID_SIZE;
 
     return currentData;
 }
@@ -488,6 +525,7 @@ void executeInstruction(data current_location){
     data arg1,arg2;
     data pointer = pointers[0];
 
+    printCell(current_location.x,current_location.y);
     i = explodeInstruction(grid[current_location.x][current_location.y].inst);
     if(i.arguments == 0){
         arg1 = getData(i.addressing1,i.x1,i.y1);

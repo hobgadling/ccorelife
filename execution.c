@@ -38,49 +38,49 @@ void jbzInst(data arg1, data save_to){
 }
 
 void jerInst(data arg1, data save_to){
-    if(grid[arg1.x][arg1.y].e == 0){
+    if(grid[arg1.x % GRID_SIZE][arg1.y % GRID_SIZE].e == 0){
         jmpInst(save_to);
     }
 }
 
 void jesInst(data arg1, data save_to){
-    if(grid[arg1.x][arg1.y].e == 1){
+    if(grid[arg1.x % GRID_SIZE][arg1.y % GRID_SIZE].e == 1){
         jmpInst(save_to);
     }
 }
 
 void jmfInst(data arg1, data save_to){
-    if(grid[arg1.x][arg1.y].owner.id != grid[pointers[0].x][pointers[0].y].owner.id){
+    if(grid[arg1.x % GRID_SIZE][arg1.y % GRID_SIZE].owner.id != grid[pointers[0].x % GRID_SIZE][pointers[0].y % GRID_SIZE].owner.id){
         jmpInst(save_to);
     }
 }
 
 void jmtInst(data arg1, data save_to){
-    if(grid[arg1.x][arg1.y].owner.id == grid[pointers[0].x][pointers[0].y].owner.id){
+    if(grid[arg1.x % GRID_SIZE][arg1.y % GRID_SIZE].owner.id == grid[pointers[0].x % GRID_SIZE][pointers[0].y % GRID_SIZE].owner.id){
         jmpInst(save_to);
     }
 }
 
 void jnrInst(data arg1, data save_to){
-    if(grid[arg1.x][arg1.y].n == 0){
+    if(grid[arg1.x % GRID_SIZE][arg1.y % GRID_SIZE].n == 0){
         jmpInst(save_to);
     }
 }
 
 void jnsInst(data arg1, data save_to){
-    if(grid[arg1.x][arg1.y].n == 1){
+    if(grid[arg1.x % GRID_SIZE][arg1.y % GRID_SIZE].n == 1){
         jmpInst(save_to);
     }
 }
 
 void jofInst(data arg1, data save_to){
-    if(grid[arg1.x][arg1.y].owner.id == grid[pointers[0].x][pointers[0].y].owner.id || cellCmp(grid[arg1.x][arg1.y],emptyCell) == 0){
+    if(grid[arg1.x % GRID_SIZE][arg1.y % GRID_SIZE].owner.id == grid[pointers[0].x % GRID_SIZE][pointers[0].y % GRID_SIZE].owner.id || cellCmp(grid[arg1.x % GRID_SIZE][arg1.y % GRID_SIZE],emptyCell) == 0){
         jmpInst(save_to);
     }
 }
 
 void jotInst(data arg1, data save_to){
-    if(grid[arg1.x][arg1.y].owner.id != grid[pointers[0].x][pointers[0].y].owner.id && cellCmp(grid[arg1.x][arg1.y],emptyCell) != 0){
+    if(grid[arg1.x % GRID_SIZE][arg1.y % GRID_SIZE].owner.id != grid[pointers[0].x % GRID_SIZE][pointers[0].y % GRID_SIZE].owner.id && cellCmp(grid[arg1.x % GRID_SIZE][arg1.y % GRID_SIZE],emptyCell) != 0){
         jmpInst(save_to);
     }
 }
@@ -98,25 +98,25 @@ void jrzInst(data arg1, data save_to){
 }
 
 void jsrInst(data arg1, data save_to){
-    if(grid[arg1.x][arg1.y].s == 0){
+    if(grid[arg1.x % GRID_SIZE][arg1.y % GRID_SIZE].s == 0){
         jmpInst(save_to);
     }
 }
 
 void jssInst(data arg1, data save_to){
-    if(grid[arg1.x][arg1.y].s == 1){
+    if(grid[arg1.x % GRID_SIZE][arg1.y % GRID_SIZE].s == 1){
         jmpInst(save_to);
     }
 }
 
 void jwrInst(data arg1, data save_to){
-    if(grid[arg1.x][arg1.y].w == 0){
+    if(grid[arg1.x % GRID_SIZE][arg1.y % GRID_SIZE].w == 0){
         jmpInst(save_to);
     }
 }
 
 void jwsInst(data arg1, data save_to){
-    if(grid[arg1.x][arg1.y].w == 1){
+    if(grid[arg1.x % GRID_SIZE][arg1.y % GRID_SIZE].w == 1){
         jmpInst(save_to);
     }
 }
@@ -178,7 +178,7 @@ void orInst(data arg1, data arg2, data save_to){
 }
 
 void proInst(data save_to){
-    grid[save_to.x][save_to.y].prot = 1;
+    grid[save_to.x % GRID_SIZE][save_to.y % GRID_SIZE].prot = 1;
 }
 
 void ranInst(data arg1, data save_to){
@@ -188,19 +188,19 @@ void ranInst(data arg1, data save_to){
 }
 
 void rseInst(data save_to){
-    grid[save_to.x][save_to.y].e = 0;
+    grid[save_to.x % GRID_SIZE][save_to.y % GRID_SIZE].e = 0;
 }
 
 void rsnInst(data save_to){
-    grid[save_to.x][save_to.y].n = 0;
+    grid[save_to.x % GRID_SIZE][save_to.y % GRID_SIZE].n = 0;
 }
 
 void rssInst(data save_to){
-    grid[save_to.x][save_to.y].s = 0;
+    grid[save_to.x % GRID_SIZE][save_to.y % GRID_SIZE].s = 0;
 }
 
 void rswInst(data save_to){
-    grid[save_to.x][save_to.y].w = 0;
+    grid[save_to.x % GRID_SIZE][save_to.y % GRID_SIZE].w = 0;
 }
 
 void splInst(data save_to){
@@ -210,19 +210,19 @@ void splInst(data save_to){
 }
 
 void steInst(data save_to){
-    grid[save_to.x][save_to.y].e = 1;
+    grid[save_to.x % GRID_SIZE][save_to.y % GRID_SIZE].e = 1;
 }
 
 void stnInst(data save_to){
-    grid[save_to.x][save_to.y].n = 1;
+    grid[save_to.x % GRID_SIZE][save_to.y % GRID_SIZE].n = 1;
 }
 
 void stsInst(data save_to){
-    grid[save_to.x][save_to.y].s = 1;
+    grid[save_to.x % GRID_SIZE][save_to.y % GRID_SIZE].s = 1;
 }
 
 void stwInst(data save_to){
-    grid[save_to.x][save_to.y].w = 1;
+    grid[save_to.x % GRID_SIZE][save_to.y % GRID_SIZE].w = 1;
 }
 
 void subInst(data arg1, data arg2, data save_to){

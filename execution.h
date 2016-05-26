@@ -67,6 +67,8 @@ cell grid[GRID_SIZE][GRID_SIZE];
 char *getInstruction(instruction);
 void fillGrid(void);
 void printGrid(void);
+void printCell(int,int);
+int positive_modulo(int i, int n);
 char *getAddresses(instruction);
 data getData(int,coordinate,coordinate);
 int cellCmp(cell,cell);

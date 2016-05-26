@@ -18,13 +18,13 @@ void tick(){
             newPointers = realloc(newPointers,i*sizeof(data));
             if(grid[p.x][p.y].n == 1){
                 new.x = p.x;
-                new.y = p.y - 1;
+                new.y = positive_modulo((p.y - 1),GRID_SIZE);
                 newPointers[newpointers_length] = new;
                 newpointers_length++;
             }
 
             if(grid[p.x][p.y].e == 1){
-                new.x = p.x + 1;
+                new.x = (p.x + 1) % GRID_SIZE;
                 new.y = p.y;
                 newPointers[newpointers_length] = new;
                 newpointers_length++;
@@ -32,13 +32,13 @@ void tick(){
 
             if(grid[p.x][p.y].s == 1){
                 new.x = p.x;
-                new.y = p.y + 1;
+                new.y = (p.y + 1) % GRID_SIZE;
                 newPointers[newpointers_length] = new;
                 newpointers_length++;
             }
 
             if(grid[p.x][p.y].w == 1){
-                new.x = p.x - 1;
+                new.x = positive_modulo((p.x - 1),GRID_SIZE);
                 new.y = p.y;
                 newPointers[newpointers_length] = new;
                 newpointers_length++;
@@ -82,4 +82,8 @@ int compareWrites(const void *a,const void *b){
     const write *wb = (const write *)b;
 
     return (wa->loc.x - wb->loc.x) + (wa->loc.y - wb->loc.y);
+}
+
+int positive_modulo(int i, int n) {
+    return (i % n + n) % n;
 }
