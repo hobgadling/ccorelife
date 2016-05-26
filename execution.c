@@ -50,13 +50,13 @@ void jesInst(data arg1, data save_to){
 }
 
 void jmfInst(data arg1, data save_to){
-    if(grid[arg1.x][arg1.y].owner.id != grid[pointer[0].x][pointer[0].y].owner.id){
+    if(grid[arg1.x][arg1.y].owner.id != grid[pointers[0].x][pointers[0].y].owner.id){
         jmpInst(save_to);
     }
 }
 
 void jmtInst(data arg1, data save_to){
-    if(grid[arg1.x][arg1.y].owner.id == grid[pointer[0].x][pointer[0].y].owner.id){
+    if(grid[arg1.x][arg1.y].owner.id == grid[pointers[0].x][pointers[0].y].owner.id){
         jmpInst(save_to);
     }
 }
@@ -74,13 +74,13 @@ void jnsInst(data arg1, data save_to){
 }
 
 void jofInst(data arg1, data save_to){
-    if(grid[arg1.x][arg1.y].owner.id == grid[pointer[0].x][pointer[0].y].owner.id || cellCmp(grid[arg1.x][arg1.y],emptyCell) == 0){
+    if(grid[arg1.x][arg1.y].owner.id == grid[pointers[0].x][pointers[0].y].owner.id || cellCmp(grid[arg1.x][arg1.y],emptyCell) == 0){
         jmpInst(save_to);
     }
 }
 
 void jotInst(data arg1, data save_to){
-    if(grid[arg1.x][arg1.y].owner.id != grid[pointer[0].x][pointer[0].y].owner.id && cellCmp(grid[arg1.x][arg1.y],emptyCell) != 0){
+    if(grid[arg1.x][arg1.y].owner.id != grid[pointers[0].x][pointers[0].y].owner.id && cellCmp(grid[arg1.x][arg1.y],emptyCell) != 0){
         jmpInst(save_to);
     }
 }
