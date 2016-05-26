@@ -29,6 +29,7 @@ typedef struct cell{
     unsigned char s;
     unsigned char w;
     program owner;
+    unsigned char prot;
 } cell;
 
 static const cell emptyCell;
@@ -59,10 +60,32 @@ data getData(int,coordinate,coordinate);
 int cellCmp(cell,cell);
 int dataCmp(data,data);
 exploded_instruction explodeInstruction(instruction);
-void executeInstruction(data);
-void addInst(data,data,data);
 data getCellAddress(int,coordinate,coordinate);
 void saveData(data,data);
+
+//Execution functions
+void addInst(data,data,data);
+void andInst(data,data,data);
+void divInst(data,data,data);
+void modInst(data,data,data);
+void moveInst(data,data);
+void mulInst(data,data,data);
+void notInst(data,data);
+void orInst(data,data,data);
+void proInst(data);
+void ranInst(data,data);
+void rseInst(data);
+void rsnInst(data);
+void rssInst(data);
+void rswInst(data);
+void subInst(data,data,data);
+void steInst(data);
+void stnInst(data);
+void stsInst(data);
+void stwInst(data);
+
+//CPU functions
 void tick(void);
+void executeInstruction(data);
 
 #endif

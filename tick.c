@@ -43,4 +43,5 @@ void tick(){
     }
 
     pointers = newPointers;
+    pointers_length = newpointers_length;
 }

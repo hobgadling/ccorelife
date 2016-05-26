@@ -494,24 +494,44 @@ void executeInstruction(data current_location){
             case 1:
                 //return "jmp";
             case 2:
+                notInst(arg1,getCellAddress(i.addressing1,i.x1,i.y1));
+                break;
                 //return "not";
             case 3:
+                proInst(getCellAddress(i.addressing1,i.x1,i.y1));
+                break;
                 //return "prot";
             case 4:
+                rsnInst(getCellAddress(i.addressing1,i.x1,i.y1));
+                break;
                 //return "rstn";
             case 5:
+                rseInst(getCellAddress(i.addressing1,i.x1,i.y1));
+                break;
                 //return "rste";
             case 6:
+                rssInst(getCellAddress(i.addressing1,i.x1,i.y1));
+                break;
                 //return "rsts";
             case 7:
+                rswInst(getCellAddress(i.addressing1,i.x1,i.y1));
+                break;
                 //return "rstw";
             case 8:
+                stnInst(getCellAddress(i.addressing1,i.x1,i.y1));
+                break;
                 //return "setn";
             case 9:
+                steInst(getCellAddress(i.addressing1,i.x1,i.y1));
+                break;
                 //return "sete";
             case 0xa:
+                stsInst(getCellAddress(i.addressing1,i.x1,i.y1));
+                break;
                 //return "sets";
             case 0xb:
+                stwInst(getCellAddress(i.addressing1,i.x1,i.y1));
+                break;
                 //return "setw";
             case 0xc:
                 //return "split";
@@ -531,8 +551,12 @@ void executeInstruction(data current_location){
                 break;
                 //return "add";
             case 0x01:
+                andInst(arg1,arg2,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "and";
             case 0x02:
+                divInst(arg1,arg2,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "div";
             case 0x03:
                 //return "jmpxz";
@@ -575,16 +599,28 @@ void executeInstruction(data current_location){
             case 0x16:
                 //return "jmprn";
             case 0x17:
+                modInst(arg1,arg2,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "mod";
             case 0x18:
+                moveInst(arg1,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "move";
             case 0x19:
+                mulInst(arg1,arg2,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "mult";
             case 0x1A:
+                orInst(arg1,arg2,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "or";
             case 0x1B:
+                ranInst(arg1,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "rand";
             case 0x1C:
+                subInst(arg1,arg2,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "sub";
             default:
                 return;
@@ -594,7 +630,11 @@ void executeInstruction(data current_location){
 }
 
 void saveData(data save_to, data d){
-    if(grid[save_to.x][save_to.y].inst >> 54 == 0){
-        grid[save_to.x][save_to.y].inst = (d.x << 27) | d.y;
+    if(grid[save_to.x][save_to.y].prot == 1){
+        grid[save_to.x][save_to.y].prot = 0;
+    } else {
+        if(grid[save_to.x][save_to.y].inst >> 54 == 0){
+            grid[save_to.x][save_to.y].inst = (d.x << 27) | d.y;
+        }
     }
 }
