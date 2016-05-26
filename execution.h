@@ -45,12 +45,20 @@ typedef struct exploded_instruction{
     unsigned long y2;
 } exploded_instruction;
 
+typedef struct write{
+    data loc;
+    instruction inst;
+} write;
+
 data *pointers;
 int pointers_length;
 
 data *newPointers;
 int newpointers_length;
 int follow_flow;
+
+write *writes;
+int write_length;
 
 program *owners;
 

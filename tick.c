@@ -1,8 +1,13 @@
 #include "execution.h"
 
+int compareWrites(const void *,const void *);
+
 void tick(){
     int i, j;
     data p, new;
+
+    writes = NULL;
+    write_length = 0;
 
     while(pointers != NULL){
         p = pointers[0];
@@ -44,10 +49,36 @@ void tick(){
         follow_flow = 1;
     }
 
+    qsort(writes,write_length,sizeof(write),compareWrites);
+
+    for(i = 0; i < write_length; i++){
+        if(i == write_length - 1){
+            grid[writes[i].loc.x][writes[i].loc.y].inst = writes[i].inst;
+        } else {
+            if(writes[i].loc.x == writes[i+1].loc.x && writes[i].loc.y == writes[i+1].loc.y){
+                if(rand() % 2 == 0){
+                    grid[writes[i].loc.x][writes[i].loc.y].inst = writes[i].inst;
+                } else {
+                    grid[writes[i+1].loc.x][writes[i+1].loc.y].inst = writes[i+1].inst;
+                }
+                i++;
+            } else {
+                grid[writes[i].loc.x][writes[i].loc.y].inst = writes[i].inst;
+            }
+        }
+    }
+
     pointers = newPointers;
     pointers_length = newpointers_length;
 
     free(newPointers);
     newPointers = NULL;
     newpointers_length = 0;
+}
+
+int compareWrites(const void *a,const void *b){
+    const write *wa = (const write *)a;
+    const write *wb = (const write *)b;
+
+    return (wa->loc.x - wb->loc.x) + (wa->loc.y - wb->loc.y);
 }

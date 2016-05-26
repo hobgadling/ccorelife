@@ -152,7 +152,11 @@ void modInst(data arg1, data arg2, data save_to){
 }
 
 void moveInst(data arg1, data save_to){
-    grid[save_to.x][save_to.y].inst = grid[arg1.x][arg1.y].inst;
+    //grid[save_to.x][save_to.y].inst = grid[arg1.x][arg1.y].inst;
+    writes = realloc(writes,sizeof(write));
+    writes[write_length].loc = save_to;
+    writes[write_length].inst = grid[arg1.x][arg1.y].inst;
+    write_length++;
 }
 
 void mulInst(data arg1, data arg2, data save_to){

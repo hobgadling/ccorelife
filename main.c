@@ -685,7 +685,11 @@ void saveData(data save_to, data d){
         grid[save_to.x][save_to.y].prot = 0;
     } else {
         if(grid[save_to.x][save_to.y].inst >> 54 == 0){
-            grid[save_to.x][save_to.y].inst = (d.x << 27) | d.y;
+            //grid[save_to.x][save_to.y].inst = (d.x << 27) | d.y;
+            writes = realloc(writes,sizeof(write));
+            writes[write_length].loc = save_to;
+            writes[write_length].inst = (d.x << 27) | d.y;
+            write_length++;
         }
     }
 }
