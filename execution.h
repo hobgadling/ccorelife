@@ -48,6 +48,10 @@ typedef struct exploded_instruction{
 data *pointers;
 int pointers_length;
 
+data *newPointers;
+int newpointers_length;
+int follow_flow;
+
 program *owners;
 
 cell grid[GRID_SIZE][GRID_SIZE];
@@ -67,6 +71,27 @@ void saveData(data,data);
 void addInst(data,data,data);
 void andInst(data,data,data);
 void divInst(data,data,data);
+void jmpInst(data);
+void jbnInst(data,data);
+void jbzInst(data,data);
+void jerInst(data,data);
+void jesInst(data,data);
+void jmfInst(data,data);
+void jmtInst(data,data);
+void jnrInst(data,data);
+void jnsInst(data,data);
+void jofInst(data,data);
+void jotInst(data,data);
+void jrnInst(data,data);
+void jrzInst(data,data);
+void jsrInst(data,data);
+void jssInst(data,data);
+void jwrInst(data,data);
+void jwsInst(data,data);
+void jxnInst(data,data);
+void jxzInst(data,data);
+void jynInst(data,data);
+void jyzInst(data,data);
 void modInst(data,data,data);
 void moveInst(data,data);
 void mulInst(data,data,data);
@@ -78,11 +103,12 @@ void rseInst(data);
 void rsnInst(data);
 void rssInst(data);
 void rswInst(data);
-void subInst(data,data,data);
+void splInst(data);
 void steInst(data);
 void stnInst(data);
 void stsInst(data);
 void stwInst(data);
+void subInst(data,data,data);
 
 //CPU functions
 void tick(void);

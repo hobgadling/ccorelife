@@ -14,7 +14,13 @@ int main(){
     d.y = 0;
     pointers[0] = d;
 
+    newPointers = NULL;
+    newpointers_length = 0;
+    follow_flow = 1;
+
     fillGrid();
+
+    tick();
 
     return 0;
 }
@@ -33,6 +39,7 @@ void fillGrid(){
                 grid[i][j].e = rand() & 1;
                 grid[i][j].w = rand() & 1;
                 grid[i][j].s = rand() & 1;
+                grid[i][j].prot = rand() & 1;
             } else{
                 grid[i][j] = emptyCell;
             }
@@ -492,6 +499,8 @@ void executeInstruction(data current_location){
                 //return "data";
                 return;
             case 1:
+                jmpInst(getCellAddress(i.addressing1,i.x1,i.y1));
+                break;
                 //return "jmp";
             case 2:
                 notInst(arg1,getCellAddress(i.addressing1,i.x1,i.y1));
@@ -534,6 +543,8 @@ void executeInstruction(data current_location){
                 break;
                 //return "setw";
             case 0xc:
+                splInst(getCellAddress(i.addressing1,i.x1,i.y1));
+                break;
                 //return "split";
             default:
                 //return "nop";
@@ -559,44 +570,84 @@ void executeInstruction(data current_location){
                 break;
                 //return "div";
             case 0x03:
+                jxzInst(arg1,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpxz";
             case 0x04:
+                jxnInst(arg1,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpxn";
             case 0x05:
+                jyzInst(arg1,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpyz";
             case 0x06:
+                jynInst(arg1,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpyn";
             case 0x07:
+                jbzInst(arg1,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpbz";
             case 0x08:
+                jbnInst(arg1,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpbn";
             case 0x09:
+                jnrInst(getCellAddress(i.addressing1,i.x1,i.y1),getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpnr";
             case 0x0A:
+                jnsInst(getCellAddress(i.addressing1,i.x1,i.y1),getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpns";
             case 0x0B:
+                jerInst(getCellAddress(i.addressing1,i.x1,i.y1),getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmper";
             case 0x0C:
+                jesInst(getCellAddress(i.addressing1,i.x1,i.y1),getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpes";
             case 0x0D:
+                jsrInst(getCellAddress(i.addressing1,i.x1,i.y1),getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpsr";
             case 0x0E:
+                jssInst(getCellAddress(i.addressing1,i.x1,i.y1),getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpss";
             case 0x0F:
+                jwrInst(getCellAddress(i.addressing1,i.x1,i.y1),getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpwr";
             case 0x10:
+                jwsInst(getCellAddress(i.addressing1,i.x1,i.y1),getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpws";
             case 0x11:
+                jmfInst(getCellAddress(i.addressing1,i.x1,i.y1),getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpmf";
             case 0x12:
+                jmtInst(getCellAddress(i.addressing1,i.x1,i.y1),getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpmt";
             case 0x13:
+                jofInst(getCellAddress(i.addressing1,i.x1,i.y1),getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpof";
             case 0x14:
+                jotInst(getCellAddress(i.addressing1,i.x1,i.y1),getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmpot";
             case 0x15:
+                jrzInst(arg1,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmprz";
             case 0x16:
+                jrnInst(arg1,getCellAddress(i.addressing2,i.x2,i.y2));
+                break;
                 //return "jmprn";
             case 0x17:
                 modInst(arg1,arg2,getCellAddress(i.addressing2,i.x2,i.y2));
