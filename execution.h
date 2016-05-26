@@ -6,7 +6,7 @@
 
 #define instruction uint64_t
 #define coordinate signed long long
-#define GRID_SIZE 10
+#define GRID_SIZE 255
 
 typedef struct data{
     coordinate x;

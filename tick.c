@@ -9,7 +9,7 @@ void tick(){
     writes = NULL;
     write_length = 0;
 
-    while(pointers != NULL){
+    while(j <= pointers_length){
         p = pointers[0];
         executeInstruction(p);
 
@@ -47,6 +47,7 @@ void tick(){
 
         pointers += sizeof(data);
         follow_flow = 1;
+        j++;
     }
 
     qsort(writes,write_length,sizeof(write),compareWrites);
