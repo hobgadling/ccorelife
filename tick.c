@@ -9,7 +9,7 @@ void tick(){
     writes = NULL;
     write_length = 0;
 
-    while(j <= pointers_length){
+    while(j < pointers_length){
         p = pointers[0];
         executeInstruction(p);
 
@@ -45,7 +45,7 @@ void tick(){
             }
         }
 
-        pointers += sizeof(data);
+        pointers++;
         follow_flow = 1;
         j++;
     }
@@ -69,7 +69,7 @@ void tick(){
         }
     }
 
-    pointers = newPointers;
+    memcpy(pointers,newPointers,sizeof(data) * newpointers_length);
     pointers_length = newpointers_length;
 
     free(newPointers);

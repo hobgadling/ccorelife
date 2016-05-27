@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <inttypes.h>
+#include <string.h>
 
 #define instruction uint64_t
 #define coordinate signed long long

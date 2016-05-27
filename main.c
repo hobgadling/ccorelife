@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <time.h>
 #include <math.h>
-#include <string.h>
 #include "execution.h"
 
 int main(){
@@ -455,9 +454,6 @@ data getCellAddress(int addressing,coordinate x,coordinate y){
             currentData.y = pointer.y + tempCell.owner.origin.y;
             break;
     }
-
-    currentData.x = currentData.x % GRID_SIZE;
-    currentData.y = currentData.y % GRID_SIZE;
 
     return currentData;
 }
